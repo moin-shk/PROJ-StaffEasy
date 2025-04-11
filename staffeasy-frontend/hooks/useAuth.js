@@ -1,47 +1,11 @@
 import { useState, useEffect } from "react";
+import axios from "axios";
 
-// This is a mock authentication hook that simulates a real auth system
 export const useAuth = () => {
   const [user, setUser] = useState(null);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
 
-  // Mock user data based on the MongoDB data from the screenshot
-  const mockUsers = [
-    {
-      email: "moin.shaikh@gmail.com",
-      username: "moin shaikh",
-      password: "Moin123!",
-      role: "admin",
-    },
-    {
-      email: "evan.diplacido@gmail.com",
-      username: "evan diplacido",
-      password: "Evan123!",
-      role: "admin",
-    },
-    {
-      email: "nikita.kristenko@gmail.com",
-      username: "nikita kristenko",
-      password: "Nikita123!",
-      role: "admin",
-    },
-    // Add a couple of non-admin users for testing
-    {
-      email: "manager@staffeasy.com",
-      username: "Test Manager",
-      password: "password",
-      role: "manager",
-    },
-    {
-      email: "employee@staffeasy.com",
-      username: "Test Employee",
-      password: "password",
-      role: "employee",
-    },
-  ];
-
-  // Check for saved auth in localStorage on initial load
   useEffect(() => {
     const savedUser = localStorage.getItem("staffeasy_user");
     if (savedUser) {
@@ -57,57 +21,31 @@ export const useAuth = () => {
     setIsLoading(false);
   }, []);
 
-  const login = async (username, password) => {
-    // Simulate API request delay
-    await new Promise((resolve) => setTimeout(resolve, 800));
+  const login = async (email, password) => {
+    try {
+      const res = await axios.post("http://localhost:5000/api/users/login", {
+        email,
+        password,
+      });
 
-    console.log("Login attempt:", { username, password });
+      const userData = res.data;
 
-    // Make the login process more forgiving for demo purposes
-    // Accept any of the test credentials, ignoring case sensitivity
-    const foundUser = mockUsers.find(
-      (u) =>
-        u.username.toLowerCase() === username.toLowerCase() ||
-        u.email.toLowerCase() === username.toLowerCase()
-    );
-
-    console.log("Found user:", foundUser);
-
-    // For demo purposes, let's make the login always successful
-    // In a real app, you would validate the password
-    if (foundUser || true) {
-      // If a user was found, use their data, otherwise create a default admin user
-      const userToSave = foundUser
-        ? {
-            username: foundUser.username,
-            email: foundUser.email,
-            role: foundUser.role,
-          }
-        : {
-            username: username || "demo_user",
-            email: username.includes("@")
-              ? username
-              : username + "@example.com",
-            role: "admin",
-          };
-
-      console.log("Saving user:", userToSave);
-
-      // Save to state and localStorage
-      setUser(userToSave);
+      localStorage.setItem("staffeasy_user", JSON.stringify(userData));
+      setUser(userData);
       setIsAuthenticated(true);
-      localStorage.setItem("staffeasy_user", JSON.stringify(userToSave));
-      return true;
-    }
 
-    return false;
+      // ✅ Force refresh so navbar and other auth-dependent components update
+      window.location.href = "/dashboard";
+
+      return true;
+    } catch (err) {
+      console.error("Login failed:", err.response?.data || err.message);
+      return false;
+    }
   };
 
   const logout = async () => {
-    // Simulate API request delay
     await new Promise((resolve) => setTimeout(resolve, 300));
-
-    // Clear user from state and localStorage
     setUser(null);
     setIsAuthenticated(false);
     localStorage.removeItem("staffeasy_user");
