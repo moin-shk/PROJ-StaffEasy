@@ -2,7 +2,6 @@ const express = require('express');
 const router = express.Router();
 const Employee = require('../models/Employee'); 
 
-//GET all employees
 router.get('/', async (req, res) => {
   try {
     const employees = await Employee.find();
@@ -12,7 +11,6 @@ router.get('/', async (req, res) => {
   }
 });
 
-//POST a new employee
 router.post('/', async (req, res) => {
   try {
     const newEmployee = new Employee(req.body);
@@ -23,7 +21,6 @@ router.post('/', async (req, res) => {
   }
 });
 
-//GET employee by ID
 router.get('/:id', async (req, res) => {
   try {
     const employee = await Employee.findById(req.params.id);
@@ -34,7 +31,6 @@ router.get('/:id', async (req, res) => {
   }
 });
 
-//PUT update employee by ID
 router.put('/:id', async (req, res) => {
   try {
     const updated = await Employee.findByIdAndUpdate(req.params.id, req.body, { new: true });
@@ -45,7 +41,6 @@ router.put('/:id', async (req, res) => {
   }
 });
 
-//DELETE employee by ID
 router.delete('/:id', async (req, res) => {
   try {
     const deleted = await Employee.findByIdAndDelete(req.params.id);
