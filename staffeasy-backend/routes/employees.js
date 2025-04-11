@@ -1,33 +1,59 @@
 const express = require('express');
 const router = express.Router();
+const Employee = require('../models/Employee'); 
 
-// GET all employees (this is a placeholder for now)
-router.get('/', (req, res) => {
-  res.json({ message: 'Retrieve all employees' });
+//GET all employees
+router.get('/', async (req, res) => {
+  try {
+    const employees = await Employee.find();
+    res.json(employees);
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
 });
 
-// POST a new employee (placeholder)
-router.post('/', (req, res) => {
-  // Data from req.body would be processed here in a complete version.
-  res.json({ message: 'Create a new employee' });
+//POST a new employee
+router.post('/', async (req, res) => {
+  try {
+    const newEmployee = new Employee(req.body);
+    await newEmployee.save();
+    res.status(201).json(newEmployee);
+  } catch (err) {
+    res.status(400).json({ message: err.message });
+  }
 });
 
-// GET an employee by ID (placeholder)
-router.get('/:id', (req, res) => {
-  const employeeId = req.params.id;
-  res.json({ message: `Retrieve employee with ID ${employeeId}` });
+//GET employee by ID
+router.get('/:id', async (req, res) => {
+  try {
+    const employee = await Employee.findById(req.params.id);
+    if (!employee) return res.status(404).json({ message: 'Employee not found' });
+    res.json(employee);
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
 });
 
-// PUT update an employee by ID (placeholder)
-router.put('/:id', (req, res) => {
-  const employeeId = req.params.id;
-  res.json({ message: `Update employee with ID ${employeeId}` });
+//PUT update employee by ID
+router.put('/:id', async (req, res) => {
+  try {
+    const updated = await Employee.findByIdAndUpdate(req.params.id, req.body, { new: true });
+    if (!updated) return res.status(404).json({ message: 'Employee not found' });
+    res.json(updated);
+  } catch (err) {
+    res.status(400).json({ message: err.message });
+  }
 });
 
-// DELETE an employee by ID (placeholder)
-router.delete('/:id', (req, res) => {
-  const employeeId = req.params.id;
-  res.json({ message: `Delete employee with ID ${employeeId}` });
+//DELETE employee by ID
+router.delete('/:id', async (req, res) => {
+  try {
+    const deleted = await Employee.findByIdAndDelete(req.params.id);
+    if (!deleted) return res.status(404).json({ message: 'Employee not found' });
+    res.json({ message: 'Employee deleted' });
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
 });
 
 module.exports = router;
