@@ -25,6 +25,9 @@ mongoose.connect('mongodb+srv://Nikita:AXZILEMONAX@cluster0.h1tjqig.mongodb.net/
 
 const employeesRoute = require('./staffeasy-backend/routes/employees');
 app.use('/api/employees', employeesRoute);
+const teamsRoute = require('./staffeasy-backend/routes/teams');
+app.use('/api/teams', teamsRoute);
+
 
 app.get('/', (req, res) => {
   res.send('Server is running!');
