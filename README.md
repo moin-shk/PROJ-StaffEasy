@@ -1,25 +1,24 @@
 # StaffEasy - Employee Management System
-
 StaffEasy is a comprehensive employee management system designed to simplify operations within companies of any size. This web application centralizes employee data, eliminating outdated paper-based systems and disconnected spreadsheets.
 
 ## Project Contributors
-
 - **Evan Di Placido**: Documentation & Frontend Development
 - **Caleb Irvine**: Frontend Development
 - **Nikita Kristenko**: Authentication & Database
 - **Mohammed Moin Shaikh**: Backend Development
 
 ## Features
-
 - **Employee Management**: Create, read, update, and delete employee records
 - **Team Structure Management**: Organize teams and reporting hierarchies
 - **Role-Based Access Control**: Different permissions for admins, managers, and employees
-- **Time-Off Management**: Request and approve time off
+- **Time-Off Management**: Request, approve, and track employee time off
 - **Payroll Management**: Send paychecks and view payment history
 - **Analytics Dashboard**: Visualize company and employee metrics
+- **Personalized Dashboards**: Custom views based on user role
+- **Recent Activity Tracking**: Monitor system changes and updates
+- **Search Functionality**: Quickly find employees and team information
 
 ## Technology Stack
-
 - **Frontend**: React.js with Tailwind CSS
 - **Backend**: Node.js with Express
 - **Database**: MongoDB (NoSQL)
@@ -31,13 +30,11 @@ StaffEasy is a comprehensive employee management system designed to simplify ope
 ## Getting Started
 
 ### Prerequisites
-
 - Node.js (v14.x or higher)
 - MongoDB database (local or cloud instance)
 - npm or yarn package manager
 
 ### Installation
-
 1. Clone the repository:
 
    ```
@@ -77,7 +74,6 @@ StaffEasy is a comprehensive employee management system designed to simplify ope
 6. Open [http://localhost:3000](http://localhost:3000) to view the application in your browser.
 
 ## Role-Based Access
-
 - **Admin**: Full access to all features, including employee management, team structure, and analytics
 - **Manager**: Access to time-off approval, paycheck management, and team metrics
 - **Employee**: Access to personal profile, time-off requests, and paycheck information
